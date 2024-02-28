@@ -1,0 +1,31 @@
+import unittest
+from book_manager import Book, BookManager
+
+class TestBookManager(unittest.TestCase):
+    
+    def setUp(self):
+        self.manager = BookManager()
+        self.book1 = Book('123', 'Book One', 'Author One')
+        self.book2 = Book('456', 'Book Two', 'Author Two')
+        self.manager.add_book(self.book1)
+        self.manager.add_book(self.book2)
+    
+    def test_add_book(self):
+        self.book3 = Book('789', 'Book Three', 'Author Three')
+        self.manager.add_book(self.book3)
+        self.assertIn(self.book3, self.manager.books)
+    
+    def test_prevent_duplicate_isbn(self):
+        duplicate_book = Book('123', 'Book One Duplicate', 'Author One')
+        self.manager.add_book(duplicate_book)
+        self.assertEqual(self.manager.books.count(duplicate_book), 1)
+    
+    def test_remove_book(self):
+        self.manager.remove_book('123')
+        self.assertNotIn(self.book1, self.manager.books)
+    
+    def test_list_books(self):
+        self.assertEqual(self.manager.list_books(), [self.book1, self.book2])
+
+if __name__ == '__main__':
+    unittest.main()
