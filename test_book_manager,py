@@ -2,30 +2,32 @@ import unittest
 from book_manager import Book, BookManager
 
 class TestBookManager(unittest.TestCase):
-    
+
     def setUp(self):
+        # Set up your testing environment before each test method
         self.manager = BookManager()
         self.book1 = Book('123', 'Book One', 'Author One')
         self.book2 = Book('456', 'Book Two', 'Author Two')
-        self.manager.add_book(self.book1)
-        self.manager.add_book(self.book2)
-    
+
     def test_add_book(self):
-        self.book3 = Book('789', 'Book Three', 'Author Three')
-        self.manager.add_book(self.book3)
-        self.assertIn(self.book3, self.manager.books)
-    
-    def test_prevent_duplicate_isbn(self):
-        duplicate_book = Book('123', 'Book One Duplicate', 'Author One')
-        self.manager.add_book(duplicate_book)
-        self.assertEqual(self.manager.books.count(duplicate_book), 1)
-    
+        # Test adding a book to the manager
+        self.manager.add_book(self.book1)
+        self.assertIn(self.book1, self.manager.list_books())
+
     def test_remove_book(self):
+        # Test removing a book by ISBN
+        self.manager.add_book(self.book1)
         self.manager.remove_book('123')
-        self.assertNotIn(self.book1, self.manager.books)
-    
-    def test_list_books(self):
-        self.assertEqual(self.manager.list_books(), [self.book1, self.book2])
+        self.assertNotIn(self.book1, self.manager.list_books())
+
+    def test_prevent_duplicate_isbn(self):
+        # Test that a book with a duplicate ISBN isn't added
+        self.manager.add_book(self.book1)
+        duplicate = Book('123', 'Duplicate Book', 'Author One')
+        self.manager.add_book(duplicate)
+        self.assertEqual(len(self.manager.list_books()), 1)
+
+    # You can add more test methods as needed
 
 if __name__ == '__main__':
     unittest.main()
