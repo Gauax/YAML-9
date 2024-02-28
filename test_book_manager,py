@@ -27,7 +27,6 @@ class TestBookManager(unittest.TestCase):
         self.manager.add_book(duplicate)
         self.assertEqual(len(self.manager.list_books()), 1)
 
-    # You can add more test methods as needed
 
 if __name__ == '__main__':
     unittest.main()
